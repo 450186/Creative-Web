@@ -1,26 +1,10 @@
-// let nextPostID=3
-
-// let postData=[
-//     {
-//         postid: 0,
-//         message:"Hi it's Dave",
-//         user:"Dave"
-//     },{
-//         postid: 1,
-//         message:"Glad it's Thursday",
-//         user:"Julie"
-//     }, {
-//         postid: 2,
-//         message:"Anyone for tennis this weekend?",
-//         user:"Sam"
-//     }
-// ]
 
 const mongoose = require('mongoose')
 
 const {Schema, model} = mongoose
 
 const postSchema = new Schema({
+    id: Number,
     message: String,
     user: String,
     likes: Number,
@@ -44,7 +28,6 @@ async function getLatestNPosts(n=8) {
 
 function addPost(message, user){
     let newPost={
-        //postid: nextPostID++,
         message: message,
         user: user,
         likes: 0,
@@ -54,9 +37,11 @@ function addPost(message, user){
     .catch(err=>console.error('Could not add post to MongoDB...', err))
 }
 
+
+
 module.exports={
     getPosts,
     addPost,
     getLatestNPosts,
-
+    
 }

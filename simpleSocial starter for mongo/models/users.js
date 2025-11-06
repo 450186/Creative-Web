@@ -1,12 +1,3 @@
-// let userData=[
-//     {
-//         username: "user1",
-//         password: "123"
-//     },{
-//         username: "user2",
-//         password: "456"
-//     }
-// ]
 
 const mongoose = require('mongoose')
 
@@ -38,13 +29,6 @@ async function addUser(UserFormInput, password){
 
 }
 async function checkUser(usernameFromForm, password){
-    // let found=userData.find(thisUser=>thisUser.username==username)
-    // if(found){
-    //     return found.password==password
-    // } else {
-    //     return false
-    // }
-    // //return boolean true if it matches else false
 
     let userExists = null;
 
@@ -54,7 +38,6 @@ async function checkUser(usernameFromForm, password){
     } else {
         return false
     }
-    //return boolean true if it matches else false
 }
 
 module.exports={
