@@ -7,11 +7,21 @@ const userModel=require('./models/users.js')
 
 const sessions=require('express-session')
 const cookieParser=require('cookie-parser')
+const { userInfo } = require('os')
 
 const threeMinutes= 3*60*1000
 const oneHour = 1*60*60*1000
 
 const dotenv=require('dotenv').config()
+const mongoDBusername=process.env.mongoDBusername
+const mongoDBpassword=process.env.mongoDBpassword
+const mongoAppName=process.env.mongoAppName
+
+const connectionString = `mongodb+srv://${mongoDBusername}:${mongoDBpassword}@cluster0.b7jyjnd.mongodb.net/${mongoAppName}?retryWrites=true&w=majority`
+// const connectionString = `mongodb+srv://${mongoDBusername}:${mongoDBpassword}@cluster0.lpfnqqx.mongodb.net/${mongoAppName}?retryWrites=true&w=majority`
+const mongoose = require('mongoose')
+mongoose.connect(connectionString)
+    .catch(err=>console.error('Could not connect to MongoDB...', err))
 
 app.use(sessions({
     secret:"my own secret phrase",
@@ -52,12 +62,12 @@ app.get('/profile', checkLoggedIn, (request, response)=>{
     response.sendFile(path.join(__dirname, '/views', 'profile.html'))
 })
 
-app.get('/getposts', (request, response)=>{
-    response.json({posts:posts.getPosts()})
+app.get('/getposts', async (request, response)=>{
+    response.json({posts: await posts.getLatestNPosts(3)})
 })
 
 app.post('/newpost', (request, response)=>{
-    posts.addPost(request.body.message, "userX")
+    posts.addPost(request.body.message, request.session.username)
     response.sendFile(path.join(__dirname, '/views', 'app.html'))
 })
 
@@ -65,8 +75,8 @@ app.get('/login', (request, response)=>{
     response.sendFile(path.join(__dirname, '/views', 'login.html'))
 })
 
-app.post('/login', (request, response)=>{
-    if(userModel.checkUser(request.body.username, request.body.password)){
+app.post('/login', async (request, response)=>{
+    if(await userModel.checkUser(request.body.username, request.body.password)){
         request.session.username=request.body.username
         response.sendFile(path.join(__dirname, '/views', 'app.html'))
     } else {
@@ -78,8 +88,8 @@ app.get('/register', (request, response)=>{
     response.sendFile(path.join(__dirname, '/views', 'register.html'))
 })
 
-app.post('/register', (request, response)=>{
-    if(userModel.addUser(request.body.username, request.body.password)){
+app.post('/register', async (request, response)=>{
+    if(await userModel.addUser(request.body.username, request.body.password)){
         response.sendFile(path.join(__dirname, '/views', 'login.html'))
     } else {
         response.sendFile(path.join(__dirname, '/views', 'registration_failed.html'))
