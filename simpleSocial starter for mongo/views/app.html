@@ -4,13 +4,66 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            width: 80%;
+            margin: auto;
+            align-items: center;
+            justify-content: center;
+        }
+        h1{
+            text-align: center;
+        }
+        #nav {
+            display: flex;
+            margin: 20px;
+            background-color: lemonchiffon;
+            align-items: center;
+        }
+        a{
+            margin: 20px;
+            flex-grow: 1;
+            text-decoration: none;
+            color: black;
+            font-weight: bold;
+        }
+        form{
+            margin-bottom: 20px;
+        }
+        label{
+            display: inline-block;
+            margin-bottom: 5px;
+        }
+        input[type="text"]{
+            width: 300px;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        input[type="submit"]{
+            padding: 8px 16px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover{
+            background-color: #218838;
+        }
+    </style>
 </head>
 <body>
     <h1>Simple Social App</h1>
+    <div id="nav">
         <a href="login">Login</a>
         <a href="logout">Logout</a>
         <a href="register">Register</a>
         <a href="app">Application</a>
+    </div>
+
     <h4>New post</h4>
     <form action="/newpost" method="POST">
         <label>message</label>
@@ -18,7 +71,7 @@
         <input type="submit" value="post message">
     </form>
     <h4>Recent posts</h4>
-    <ul id="recent-posts"></ul>
+    <p id="recent-posts"></p>
     <script>
         const recentPosts=document.getElementById('recent-posts')
 
@@ -31,9 +84,32 @@
             console.log(data)
             recentPosts.innerHTML=""
             data.posts.forEach(post=>{
-                let li=document.createElement('li')
-                li.innerText=`${post.message} by user: ${post.user}`
-                recentPosts.appendChild(li)
+                let div = document.createElement('div');
+                div.style ={
+                    border: "3px solid black",
+                    width: "80%",
+                    display: "flex",
+                    flexDirection: "column",
+                    backgroundColor: "lightgrey",
+                    fontfamily: "Comic-Sans, sans-serif",
+                    padding: "10px",
+                    justifyContent: "center",
+                    alignItems: "center"
+                }
+                let message = document.createElement('p');
+                message.innerText=post.message
+                message.style={
+                    fontSize: "15px",
+                    fontWeight: "bold",
+                }
+                let byLine = document.createElement('p');
+                byLine.innerText=`by user: ${post.user}`
+                let likeButton = document.createElement('button');
+                likeButton.innerText = `Like (${post.likes})`;
+                recentPosts.appendChild(div)
+                div.appendChild(message)
+                div.appendChild(byLine)
+                div.appendChild(likeButton)
             })
         }
     </script>

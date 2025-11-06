@@ -27,6 +27,7 @@ async function getLatestNPosts(n=8) {
 }
 
 function addPost(message, user){
+    
     let newPost={
         message: message,
         user: user,
@@ -37,11 +38,16 @@ function addPost(message, user){
     .catch(err=>console.error('Could not add post to MongoDB...', err))
 }
 
-
-
+async function addLikeToPost(postId){
+    let post= await PostData.findOne({_id: postId}).exec()
+    if(post){
+        post.likes+=1
+        await post.save()
+    }
+}
 module.exports={
     getPosts,
     addPost,
     getLatestNPosts,
-    
+    addLikeToPost
 }
