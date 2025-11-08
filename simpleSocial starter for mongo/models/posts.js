@@ -27,7 +27,7 @@ async function getLatestNPosts(n=8) {
 }
 
 function addPost(message, user){
-    
+
     let newPost={
         message: message,
         user: user,
@@ -39,11 +39,10 @@ function addPost(message, user){
 }
 
 async function addLikeToPost(postId){
-    let post= await PostData.findOne({_id: postId}).exec()
-    if(post){
-        post.likes+=1
-        await post.save()
-    }
+    await PostData.updateOne(
+        {_id: postId},
+        {$inc: {likes: 1}}
+    )
 }
 module.exports={
     getPosts,

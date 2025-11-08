@@ -5,27 +5,34 @@ const {Schema, model} = mongoose
 
 const userSchema = new Schema({
     username: String,
-    password: String
+    password: String,
+    Firstname: String,
+    Lastname: String,
 })
 
 const UserData = model("user", userSchema)
 
-async function addUser(UserFormInput, password){
+async function addUser(UserFormInput, password, firstname, surname){
 
     let userExists = null;
+    let nameExists = null;
 
     userExists = await UserData.findOne({username: UserFormInput}).exec()
-    if(userExists){
+    nameExists = await UserData.findOne({Firstname: firstname, Lastname: surname}).exec()
+    if(userExists || nameExists){
         return false
     } else {
         let newUser={
             username:UserFormInput,
-            password:password
+            password:password,
+            Firstname: firstname,
+            Lastname: surname,
         }
         await UserData.create(newUser)
         .catch(err=>console.error('Could not add user to MongoDB...', err))
         return true
     }
+
 
 }
 async function checkUser(usernameFromForm, password){
