@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-        <style>
+    <style>
         body {
             font-family: Arial, sans-serif;
             margin: auto;
@@ -52,6 +53,7 @@
             color: black;
             font-weight: bold;
         }
+
         #nav a:hover {
             background-color: #fffacd;
         }
@@ -93,10 +95,12 @@
         }
     </style>
 </head>
+
 <body>
     <div id="Header">
         <h1>Simple Social App</h1>
-        <img src="/simpleSocial starter for mongo/Assets/account.jpg" onclick="window.location.href='/account';"" alt="Account Details" id="logo"></img>
+        <img src="/simpleSocial starter for mongo/Assets/account.jpg" onclick="window.location.href='/account';"" alt="
+            Account Details" id="logo"></img>
     </div>
     <div id="nav">
         <a href="login">Login</a>
@@ -106,68 +110,90 @@
     </div>
 
     <div class="ContentBody">
-    <h4>New post</h4>
-    <form action="/newpost" method="POST">
-        <label>message</label>
-        <input type="text" id="message" name="message">
-        <input type="submit" value="post message">
-    </form>
-    <h4>Recent posts</h4>
-    <p id="recent-posts"></p>
-    <script>
-        const recentPosts=document.getElementById('recent-posts')
+        <h4>New post</h4>
+        <form action="/newpost" method="POST">
+            <label>message</label>
+            <input type="text" id="message" name="message">
+            <input type="submit" value="post message">
+        </form>
+        <h4>Recent posts</h4>
+        <p id="recent-posts"></p>
+        <script>
+            const recentPosts = document.getElementById('recent-posts')
 
-        fetch('/getposts')
-            .then(response=>response.json())
-            .then(processData)
-        
+            fetch('/getposts')
+                .then(response => response.json())
+                .then(processData)
 
-        function processData(data){
-            console.log(data)
-            recentPosts.innerHTML=""
-            data.posts.forEach(post=>{
-                let div = document.createElement('div');
-                Object.assign(div.style, {
-                    marginBottom: "10px",
-                    borderRadius: "50px",
-                    display: "flex",
-                    flexDirection: "column",
-                    backgroundColor: "#ede279",
-                    fontFamily: "Comic-Sans, sans-serif",
-                    padding: "10px",
-                    justifyContent: "center",
-                    alignItems: "center"
-                });
-                let message = document.createElement('p');
-                message.innerText=post.message
-                Object.assign(message.style, {
-                    fontSize: "15px",
-                    fontWeight: "bold",
-                });
-                let byLine = document.createElement('p');
-                byLine.innerText=`by user: ${post.user}`
-                let likeButton = document.createElement('button');
-                likeButton.innerText = `${post.likes}❤️`;
-                likeButton.onclick = async () => {
-                    const response = await fetch('/likepost', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type' : 'application/json'
-                        },
-                        body: JSON.stringify({postId: post._id})
-                    })
-                    const successful = await response.json()
-                    if(successful){
-                        likeButton.innerText = `${post.likes + 1}❤️`;
+
+            function processData(data) {
+                console.log(data)
+                recentPosts.innerHTML = ""
+                data.posts.forEach(post => {
+                    let div = document.createElement('div');
+                    Object.assign(div.style, {
+                        marginBottom: "10px",
+                        borderRadius: "50px",
+                        display: "flex",
+                        flexDirection: "column",
+                        backgroundColor: "#ede279",
+                        fontFamily: "Comic-Sans, sans-serif",
+                        padding: "10px",
+                        justifyContent: "center",
+                        alignItems: "center"
+                    });
+                    let message = document.createElement('p');
+                    message.innerText = post.message
+                    Object.assign(message.style, {
+                        fontSize: "15px",
+                        fontWeight: "bold",
+                    });
+                    let byLine = document.createElement('p');
+                    let liked = false;
+                    byLine.innerText = `by user: ${post.user}`
+                    let likeButton = document.createElement('button');
+                    likeButton.innerText = `${post.likes}❤️`;
+                    likeButton.onclick = async () => {
+                        if (liked) {
+                            const response = await fetch('/likepost', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({ postId: post._id })
+                            })
+                            const successful = await response.json()
+                            if (successful) {
+                                likeButton.innerText = `${post.likes - 1}❤️`;
+                            }
+                            liked = false;
+                        }
+                        return;
                     }
-                } 
-                recentPosts.appendChild(div)
-                div.appendChild(message)
-                div.appendChild(byLine)
-                div.appendChild(likeButton)
-            })
-        }
-    </script>
+                    if (!liked) {
+                        const response = await fetch('/likepost', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ postId: post._id })
+                        })
+                        const successful = await response.json()
+                        if (successful) {
+                            likeButton.innerText = `${post.likes + 1}❤️`;
+                        }
+                        liked = true;
+                    }
+
+                }
+                    recentPosts.appendChild(div)
+                    div.appendChild(message)
+                    div.appendChild(byLine)
+                    div.appendChild(likeButton)
+                })
+            }
+        </script>
     </div>
 </body>
+
 </html>
