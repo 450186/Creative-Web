@@ -38,11 +38,24 @@ function addPost(message, user){
     .catch(err=>console.error('Could not add post to MongoDB...', err))
 }
 
-async function addLikeToPost(postId){
-    await PostData.updateOne(
+async function addLikeToPost(postId, username){
+    const Liked = false
+    if(username === post.user){
+        throw new Error("Users cannot like their own posts.");
+    } else {
+        await PostData.updateOne(
         {_id: postId},
         {$inc: {likes: 1}}
-    )
+        ).exec() 
+        Liked = true;
+    }
+    if(Liked === true){
+        await PostData.updateOne(
+            {_id: postId},
+            {$inc: {likes: - 1}}
+        ).exec()
+        Liked = false;
+    }
 }
 module.exports={
     getPosts,

@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <style>
-        body {
+<style>
+            body {
             font-family: Arial, sans-serif;
             margin: auto;
             align-items: center;
@@ -93,14 +93,14 @@
         input[type="submit"]:hover {
             background-color: #218838;
         }
-    </style>
+</style>
 </head>
 
 <body>
     <div id="Header">
         <h1>Simple Social App</h1>
-        <img src="/simpleSocial starter for mongo/Assets/account.jpg" onclick="window.location.href='/account';"" alt="
-            Account Details" id="logo"></img>
+        <!-- <img src="/simpleSocial starter for mongo/Assets/account.jpg" onclick="window.location.href='/account';"" alt="
+            Account Details" id="logo"></img> -->
     </div>
     <div id="nav">
         <a href="login">Login</a>
@@ -124,11 +124,15 @@
             fetch('/getposts')
                 .then(response => response.json())
                 .then(processData)
+                .catch(error => console.error('Error fetching posts:', error));
 
 
             function processData(data) {
-                console.log(data)
+                console.log("Fetched Data: ", data)
                 recentPosts.innerHTML = ""
+
+                const posts = data.posts || [];
+
                 data.posts.forEach(post => {
                     let div = document.createElement('div');
                     Object.assign(div.style, {
@@ -149,48 +153,35 @@
                         fontWeight: "bold",
                     });
                     let byLine = document.createElement('p');
-                    let liked = false;
                     byLine.innerText = `by user: ${post.user}`
+
                     let likeButton = document.createElement('button');
                     likeButton.innerText = `${post.likes}❤️`;
                     likeButton.onclick = async () => {
-                        if (liked) {
-                            const response = await fetch('/likepost', {
+                        likeButton.onclick = async () => {
+                            try {
+                                const response = await fetch('/likepost', {
                                 method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                },
+                                headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify({ postId: post._id })
-                            })
-                            const successful = await response.json()
-                            if (successful) {
-                                likeButton.innerText = `${post.likes - 1}❤️`;
+                                });
+                                const result = await response.json();
+                                if (result.success) {
+                                likeButton.innerText = `${result.newLikes} ❤️`;
+                                } else {
+                                console.error("Like failed:", result.message);
+                                }
+                            } catch (err) {
+                                console.error("Error liking post:", err);
                             }
-                            liked = false;
-                        }
-                        return;
+                            };
                     }
-                    if (!liked) {
-                        const response = await fetch('/likepost', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({ postId: post._id })
-                        })
-                        const successful = await response.json()
-                        if (successful) {
-                            likeButton.innerText = `${post.likes + 1}❤️`;
-                        }
-                        liked = true;
-                    }
-
-                },
-                    recentPosts.appendChild(div),
-                    div.appendChild(message),
-                    div.appendChild(byLine),
-                    div.appendChild(likeButton),
-                });
+                   
+                    div.appendChild(message)
+                    div.appendChild(byLine)
+                    div.appendChild(likeButton) 
+                    recentPosts.appendChild(div)
+                })
             }
         </script>
     </div>

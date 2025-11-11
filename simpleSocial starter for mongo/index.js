@@ -65,10 +65,11 @@ app.get('/profile', checkLoggedIn, (request, response) => {
 app.get('/getposts', async (request, response) => {
     response.json({ posts: await posts.getLatestNPosts(3) })
 })
+
 app.post('/likepost', async (request, response) => {
     const postId = request.body.postId;
     try {
-        await posts.addLikeToPost(postId);
+        await posts.addLikeToPost(postId, request.session.username);
         response.json({ success: true });
     } catch (err) {
         response.json({ success: false, error: err.message });

@@ -19,7 +19,8 @@ async function addUser(UserFormInput, password, firstname, surname){
 
     userExists = await UserData.findOne({username: UserFormInput}).exec()
     nameExists = await UserData.findOne({Firstname: firstname, Lastname: surname}).exec()
-    if(userExists || nameExists){
+    if(userExists){
+        console.log('User already exists')
         return false
     } else {
         let newUser={
