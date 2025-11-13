@@ -1,0 +1,91 @@
+<%- include('../partials/header') %>
+
+<%- include('../partials/Navigation') %>
+    <div class="ContentBody">
+        <h2>Welcome, <%= username %></h2>
+        <h4>New post</h4>
+        <form action="/newpost" method="POST">
+            <label>message</label>
+            <input type="text" id="message" name="message">
+            <input type="submit" value="post message">
+        </form>
+        <h4>Recent posts</h4>
+        <p id="recent-posts"></p>
+        <% posts.forEach(post => { %>
+        <div id="post-div">
+            <p id="message-field">
+                message: <%= post.message %>
+            </p>
+            <p>
+                By:<%= post.user %>
+            </p>
+        </div>
+        <% })%>
+        <!-- <script>
+            const recentPosts = document.getElementById('recent-posts')
+
+            fetch('/getposts')
+                .then(response => response.json())
+                .then(processData)
+                .catch(error => console.error('Error fetching posts:', error));
+
+
+            function processData(data) {
+                console.log("Fetched Data: ", data)
+                recentPosts.innerHTML = ""
+
+                const posts = data.posts || [];
+
+                data.posts.forEach(post => {
+                    let div = document.createElement('div');
+                    Object.assign(div.style, {
+                        marginBottom: "10px",
+                        borderRadius: "50px",
+                        display: "flex",
+                        flexDirection: "column",
+                        backgroundColor: "#ede279",
+                        fontFamily: "Comic-Sans, sans-serif",
+                        padding: "10px",
+                        justifyContent: "center",
+                        alignItems: "center"
+                    });
+                    let message = document.createElement('p');
+                    message.innerText = post.message
+                    Object.assign(message.style, {
+                        fontSize: "15px",
+                        fontWeight: "bold",
+                    });
+                    let byLine = document.createElement('p');
+                    byLine.innerText = `by user: ${post.user}`
+
+                    let likeButton = document.createElement('button');
+                    likeButton.innerText = `${post.likes}❤️`;
+                    likeButton.onclick = async () => {
+                        likeButton.onclick = async () => {
+                            try {
+                                const response = await fetch('/likepost', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ postId: post._id })
+                                });
+                                const result = await response.json();
+                                if (result.success) {
+                                likeButton.innerText = `${result.newLikes} ❤️`;
+                                } else {
+                                console.error("Like failed:", result.message);
+                                }
+                            } catch (err) {
+                                console.error("Error liking post:", err);
+                            }
+                            };
+                    }
+                   
+                    div.appendChild(message)
+                    div.appendChild(byLine)
+                    div.appendChild(likeButton) 
+                    recentPosts.appendChild(div)
+                })
+            }
+        </script> -->
+    </div>
+<%- include('../partials/footer') %>

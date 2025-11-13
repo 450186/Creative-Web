@@ -30,6 +30,7 @@ app.use(sessions({
     saveUninitialized: false
 }))
 
+app.set('view engine', 'ejs')
 
 app.listen(3000, () => {
     console.log('listening on port 3000')
@@ -54,8 +55,16 @@ function checkLoggedIn(request, response, nextAction) {
     }
 }
 
-app.get('/app', checkLoggedIn, (request, response) => {
-    response.sendFile(path.join(__dirname, '/views', 'app.html'))
+function getloggedinState(request) {
+    return request.session && request.session.username;
+}
+
+app.get('/app', checkLoggedIn, async (request, response) => {
+    response.render('pages/app', {
+        username: request.session.username,
+        isloggedin: getloggedinState(request),
+        posts: await posts.getLatestNPosts(3)
+    })
 })
 
 app.get('/profile', checkLoggedIn, (request, response) => {
@@ -82,13 +91,20 @@ app.post('/newpost', (request, response) => {
 })
 
 app.get('/login', (request, response) => {
-    response.sendFile(path.join(__dirname, '/views', 'login.html'))
+    // response.sendFile(path.join(__dirname, '/views', 'login.html'))
+    response.render('pages/login', {
+        isloggedin: getloggedinState(request),
+    })
 })
 
 app.post('/login', async (request, response) => {
     if (await userModel.checkUser(request.body.username, request.body.password)) {
-        request.session.username = request.body.username
-        response.sendFile(path.join(__dirname, '/views', 'app.html'))
+        request.session.username = request.body.username;
+        response.render('pages/app', {
+            username: request.session.username,
+            isloggedin: getloggedinState(request),
+            posts: await posts.getLatestNPosts(3)
+        })
     } else {
         response.sendFile(path.join(__dirname, '/views', 'notloggedin.html'))
     }
