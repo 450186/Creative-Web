@@ -1,0 +1,6 @@
+<%- include('../partials/header') %>
+<h1>Hi There, <%= user.firstname %></h1>
+<% if (user.isAdmin) { %>
+    <div style="background: #ddd; padding: 0.5em">You are an administrator</div>
+<% } %>
+<%- include('../partials/footer') %>
