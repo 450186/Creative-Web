@@ -4,51 +4,64 @@ const mongoose = require('mongoose')
 const {Schema, model} = mongoose
 
 const userSchema = new Schema({
-    username: String,
-    password: String,
-    Firstname: String,
-    Lastname: String,
+    username: {type: String, required: true, unique: true},
+    password: {type: String, required: true},
+    Firstname: {type: String, required: true},
+    Lastname: {type: String, required: true},
+    profilePic: {type: String, default: "../public/account.jpg"},
+    isAdmin: {type: Boolean, default: false}
 })
 
 const UserData = model("user", userSchema)
 
-async function addUser(UserFormInput, password, firstname, surname){
+async function addUser(username, password, Firstname, Lastname, profilePic, isAdmin){
 
-    let userExists = null;
-    let nameExists = null;
+    const userExists = await UserData.findOne({username}).exec()
 
-    userExists = await UserData.findOne({username: UserFormInput}).exec()
-    nameExists = await UserData.findOne({Firstname: firstname, Lastname: surname}).exec()
     if(userExists){
         console.log('User already exists')
         return false
     } else {
         let newUser={
-            username:UserFormInput,
-            password:password,
-            Firstname: firstname,
-            Lastname: surname,
+            username: username,
+            password: password,
+            Firstname: Firstname,
+            Lastname: Lastname,
+            profilePic: profilePic,
+            isAdmin: isAdmin
         }
         await UserData.create(newUser)
         .catch(err=>console.error('Could not add user to MongoDB...', err))
         return true
     }
-
-
 }
-async function checkUser(usernameFromForm, password){
+
+async function deleteUser(username) {
+    return await UserData.deleteOne({username: username}).exec();
+}
+
+async function checkUser(username, password){
 
     let userExists = null;
 
-    userExists = await UserData.findOne({username: usernameFromForm}).exec()
+    userExists = await UserData.findOne({username: username}).exec()
         if(userExists){
         return userExists.password==password
     } else {
         return false
     }
 }
+async function checkUsername(username) {
+    const user = await UserData.findOne({username}).exec()
+
+    return !!user
+}
+
 
 module.exports={
     addUser,
-    checkUser
+    checkUser,
+    UserData,
+    checkUsername,
+    deleteUser
 }

@@ -1,0 +1,35 @@
+<%- include('../partials/header') %>
+<h2>Users Listed:</h2>
+
+<% if(typeof errorMessage !== 'undefined' && errorMessage) { %>
+    <p id="errorMessage"><%= errorMessage %></p>        
+<% } %>
+
+<% users.forEach(user => { %>
+<div id="user-div">
+    <div class="row"> 
+        <label>Username: </label>
+        <p id="username-display"><%= user.username %></p>
+    </div>
+    <div class="row"> 
+        <label>First Name: </label>
+        <p id="firstname-display"><%= user.Firstname %></p>
+    </div>
+    <div class="row"> 
+        <label>Last Name: </label>
+        <p id="lastname-display"><%= user.Lastname %></p>
+    </div>
+    <form method="POST" action="/change-admin">
+        <input type="hidden" name="username" value="<%= user.username %>">
+        <div class="row"> 
+            <label>Admin: </label> 
+            <input onchange="this.form.submit()" id="AdminCheck" type="checkbox" <%= user.isAdmin ? "checked" : "" %> name="isAdmin"> 
+        </div>         
+    </form>
+    <form method="POST" action="/delete-user">
+        <input type="hidden" name="username" value="<%= user.username %>"> 
+        <button type="submit" id="Delete-button">Delete User</button>
+    </form>
+</div>
+<% }) %>
+<%- include('../partials/footer') %>

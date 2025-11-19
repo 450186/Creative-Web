@@ -1,7 +1,15 @@
-    <%if(isloggedin){%>
+    <% if(isAdmin === true && isloggedin && title !== "Admin") { %> 
+        <a href="admin">Admin</a>
+    <% } %>
+    <% if(title === "App") { %>
         <a href="logout">Logout</a>
+        <a href="profile">Account</a>
+    <% } else if(title === "Profile" || title === "Admin") { %> 
         <a href="app">Application</a>
-    <% } else { %>
+        <a href="logout">Logout</a>
+    <% } else if(title === "Logout" || title === "Not Logged In") { %>
         <a href="login">Login</a>
         <a href="register">Register</a>
+    <% } else if(title === "Register") { %>
+        <p>Already Have an Account?<a href="login">Login</a></p>
     <% } %>

@@ -1,8 +1,8 @@
-<%- include ('../partials/header')%>
+<%- include ('../partials/header') %>
 <body>
-    <h2>Simple Social</h2> 
-    <h3>User Login</h3>
     <div id="ContentBody">
+        <h3>User Login</h3>
+
         <form action="/login" method="POST">
             <label>Username</label>
             <input type="text" id="username" name="username"><br>
@@ -10,10 +10,12 @@
             <input type="password" id="password" name="password"><br>
             <input type="submit" value="Login">
         </form>
+        <% if(typeof errorMessage !== 'undefined') { %>
+            <p id="errorMessage"> <%= errorMessage %> </p>
+        <% } %>
+        <div style="text-align: center; margin-top: 20px; margin-bottom: 20px;">
+            <p>No account? <a href="register">Register here</a></p>
+        </div>
     </div>
-    <div id="nav">
-        <a href="register">No account? Register here</a>
-    </div>
-
 </body>
 <%- include('../partials/footer') %>

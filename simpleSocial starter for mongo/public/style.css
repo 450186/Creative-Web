@@ -13,6 +13,10 @@
             justify-content: center;
             position: relative;
             width: 100%;
+            background-color: #ede279;
+        }
+        #get-started {
+            margin: 20px
         }
 
         h1 {
@@ -47,8 +51,21 @@
         }
 
         .ContentBody {
-            width: 40%;
-            margin: auto;
+            flex: 1;
+        }
+
+        #footer {
+            font-weight: bold;
+            margin-right: 20px;
+            padding: 1rem 0 0 0;
+            position: fixed;
+            bottom: 0;
+            right: 0
+        }
+
+        #errorMessage {
+            font-weight: bold;
+            color: red;
         }
 
         form {
@@ -69,7 +86,7 @@
             border-radius: 4px;
         }
 
-        input[type="submit"] {
+        input[type="submit"], input[type="button"] {
             padding: 8px 16px;
             background-color: #28a745;
             color: white;
@@ -77,23 +94,79 @@
             border-radius: 4px;
             cursor: pointer;
         }
-
-        input[type="submit"]:hover {
+        #Delete-button {
+            padding: 8px 16px;
+            background-color: #fc3e3e;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        #Delete-button:hover {
+            background-color: #fc3e3ec2;
+        }
+        
+        input[type="submit"]:hover, input[type="button"]:hover {
             background-color: #218838;
         }
+        input[type="file"] {
+            width: 180px;
+            margin: 10px;
+            margin-left: 0px;
+        }
+        input[type="button"] {
+            margin-bottom: 20px;
+        }
+        #upload-pic-form {
+            display: flex;
+            flex-direction: column;
+            width: 50%;
+            margin: auto;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        #edit-details-form input[type="submit"] {
+            margin: 10px;
+        }
 
-        #post-div {
-            margin-bottom: "10px";
-            border-radius: "50px";
-            display: "flex";
-            flex-direction: "column";
-            background-color: "#ede279";
-            font-family: "Comic-Sans, sans-serif";
-            padding: "10px";
-            justify-content: "center";
-            align-items: "center";
+        #post-div, #user-div {
+            margin-bottom: 10px;
+            border-radius: 50px;
+            display: flex;
+            flex-direction: column;
+            background-color: #ede279;
+            padding: 10px;
+            justify-content: center;
+            align-items: center;
+            max-width: 50%;
+            margin: auto;
+            margin-bottom: 20px;
+        }
+        .row {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            width: 70%;
+            align-items: center;
+        }
+        .row label {
+            font-weight: bold;
+            margin-right: 5px;
+            margin-bottom: 0;
+        }
+        #user-div .row:last-of-type {
+            margin-bottom: 20px
         }
         #message-field {
-            font-size: "15px";
-            font-weight: "bold";
+            font-size: 15px;
+            font-weight: bold;
+        }
+        #profile-pic {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%; 
+        }
+        #user-div label {
+            display: inline-block;
         }

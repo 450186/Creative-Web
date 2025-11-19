@@ -7,4 +7,18 @@
     <title>Title</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<h2>Simple Social</h2>
+<div style="margin-bottom: 40px;">
+    <div id="Header">
+        <h2>Simple Social</h2>
+    </div>
+    <% if( !isloggedin && username ) { %>
+        <h3>Welcome, <%= username %></h3>
+    <% } %>
+</div>
+<%- include('../partials/Navigation', { 
+    title,
+    isAdmin,
+    isloggedin,
+    username
+}) %>
+<div class="Content-Body">
