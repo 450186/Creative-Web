@@ -122,9 +122,19 @@ app.get('/getposts', async (request, response) => {
 // })
 
 app.post('/newpost', async (request, response) => {
-    console.log("Session at /newpost:", request.session);
-    console.log("Username at /newpost:", request.session.username);
-    await posts.addPost(request.body.message, request.session.username);
+    const message = request.body.message?.trim()
+
+    if(!message) {
+        return response.render('pages/app', {
+            username: request.session.username,
+            isloggedin: getloggedinState(request),
+            title: "App",
+            posts: await posts.getLatestNPosts(8),
+            errorMessage: "You must say something!",
+            isAdmin: request.session.isAdmin || false
+        })
+    }
+    await posts.addPost(message, request.session.username);
     return response.redirect('/app')
 })
 

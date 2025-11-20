@@ -8,6 +8,9 @@
         </form>
         <h4>Recent posts</h4>
         <p id="recent-posts"></p>
+        <% if (typeof errorMessage !== 'undefined') { %>
+            <p id="errorMessage"><%= errorMessage %></p>
+        <% } %>
         <% if(posts.length === 0) { %>
             <h1 style="color: red; font-weight: bold;">No Posts</h1>
         <% } else { %> 
