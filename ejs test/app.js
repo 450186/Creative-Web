@@ -31,6 +31,12 @@ app.get('/articles', (req, res) => {
     });
 });
 
+app.get('/about', (req, res) => {
+    res.render('pages/about', {
+        title: 'About'
+    });
+});
+
 app.listen(port, () => {
   console.log(`App listening at port ${port}`);
 });

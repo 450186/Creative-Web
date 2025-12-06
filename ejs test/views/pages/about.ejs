@@ -1,0 +1,59 @@
+<%- include('../partials/header') %>
+
+    <div class="slide-container">
+        <div class="mySlides fade">
+            <h2>About Us</h2>
+            <p>Welcome to SampleBlog! We are dedicated to providing you with the latest news and articles on a variety of topics. Our team of writers works hard to bring you engaging and informative content.</p>
+            <p>Our mission is to create a community where readers can find valuable information and connect with others who share their interests. Whether you're looking for tips, insights, or just some interesting reads, SampleBlog has something for everyone.</p>
+            <p>Thank you for visiting our blog. We hope you enjoy your time here and find the content helpful and inspiring!</p>
+        </div>
+        <div class="mySlides fade">
+            <h2>Our Team</h2>
+            <p>Our team consists of passionate writers, editors, and content creators who are experts in their respective fields. We believe in the power of storytelling and strive to deliver high-quality articles that resonate with our audience.</p>
+            <p>We are committed to maintaining the highest standards of integrity and accuracy in our content. Our team works collaboratively to ensure that every article is well-researched and thoughtfully written.</p>
+            <p>Meet our team members on the Articles page and learn more about their backgrounds and areas of expertise!</p>
+    </div>
+        <div class="mySlides fade">
+            <h2>Contact Us</h2>
+            <p>If you have any questions, suggestions, or feedback, we would love to hear from you! Feel free to reach out to us through the contact form on our Articles page or connect with us on social media.</p>
+            <p>Your input is valuable to us as we strive to improve and provide content that meets your needs. Thank you for being a part of the SampleBlog community!</p>
+        </div>
+        <div class="mySlides fade">
+            <h2>Follow Us</h2>
+            <p>Stay updated with the latest articles and news by following us on our social media channels. We regularly share updates, behind-the-scenes content, and exclusive insights with our followers.</p>
+            <p>Join our online community and engage with other readers who share your interests. We look forward to connecting with you!</p>
+        </div>
+        <div class="mySlides fade">
+            <h2>Subscribe</h2>
+            <p>Don't miss out on our latest articles and updates! Subscribe to our newsletter to receive regular updates directly in your inbox. Stay informed and never miss a post from SampleBlog.</p>
+            <p>Simply enter your email address on the Articles page to join our mailing list. We respect your privacy and will only send you content that we believe you'll find valuable.</p>
+        </div>
+        <a class="prev" onclick="addSlides(-1)">&#10094;</a>
+        <a class="next" onclick="addSlides(1)">&#10095;</a>
+</div>
+<script>
+let slideIndex = 1;
+showSlides(slideIndex);
+
+function addSlides(n) {
+  showSlides(slideIndex += n);
+}
+
+function currentSlide(n) {
+  showSlides(slideIndex = n);
+}
+function showSlides(n) {
+  let i;
+  let slides = document.getElementsByClassName("mySlides");
+  if (n > slides.length) {slideIndex = 1}
+  if (n < 1) {slideIndex = slides.length}
+  for (i = 0; i < slides.length; i++) {
+    slides[i].style.display = "none";
+  }
+  slides[slideIndex-1].style.display = "block";
+}
+
+
+</script>
+
+<%- include('../partials/footer') %>
